@@ -10,6 +10,9 @@ import type { PokemonDetail, PokemonSummary } from '@/types/domain'
 const props = defineProps<{
   items: PokemonSummary[]
   details: Map<string, PokemonDetail>
+  // xl con panel de detalle abierto: la grilla pasa a 2 columnas (design-system.md,
+  // adaptación §2) porque la mitad del ancho la ocupa el panel sticky.
+  columnsOverride?: number
 }>()
 
 const emit = defineEmits<{
@@ -18,7 +21,7 @@ const emit = defineEmits<{
 
 // Mismos breakpoints que design-system.md: <576 → 1 columna, 576–991 → 2, ≥992 → 3.
 const { width } = useBreakpoint()
-const columns = computed(() => (width.value >= 992 ? 3 : width.value >= 576 ? 2 : 1))
+const columns = computed(() => props.columnsOverride ?? (width.value >= 992 ? 3 : width.value >= 576 ? 2 : 1))
 
 const containerRef = ref<HTMLElement>()
 const scrollTop = ref(0)

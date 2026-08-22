@@ -1,9 +1,89 @@
 <script setup lang="ts">
-// Lista de favoritos + estado vacío + swipe-to-delete. Se completa en la Fase 8.
+import { computed, onMounted, watch } from 'vue'
+import { useFavoritesStore } from '@/stores/useFavoritesStore'
+import { usePokemonStore } from '@/stores/usePokemonStore'
+import FavoriteCard from '@/components/pokemon/FavoriteCard.vue'
+import EmptyState from '@/components/feedback/EmptyState.vue'
+import PokeballSpinner from '@/components/ui/PokeballSpinner.vue'
+
+const favoritesStore = useFavoritesStore()
+const pokemonStore = usePokemonStore()
+
+// Hay ids guardados pero el índice (para cruzarlos) todavía no está — evita mostrar
+// "sin favoritos" un instante antes de que aparezcan de verdad (deep link a /favorites).
+const resolvingStoredFavorites = computed(
+  () => favoritesStore.ids.size > 0 && pokemonStore.indexStatus !== 'ready',
+)
+
+// Hidrata tipos/gradiente de los favoritos — la lista es acotada, no hace falta virtualizar.
+function hydrateFavorites(): void {
+  pokemonStore.ensureDetails(favoritesStore.favoritePokemon.map((item) => item.name))
+}
+
+onMounted(() => {
+  // favoritePokemon cruza los ids con el índice: sin este load, un F5 o un deep link
+  // directo a /favorites (sin haber pasado por /pokedex) mostraría "sin favoritos"
+  // aunque sí haya ids guardados en localStorage.
+  pokemonStore.loadIndex()
+  hydrateFavorites()
+})
+watch(() => favoritesStore.favoritePokemon.length, hydrateFavorites)
 </script>
 
 <template>
   <div class="favorites-view">
-    <p>Favoritos</p>
+    <header class="favorites-view__header">
+      <h1 class="favorites-view__title">Favoritos</h1>
+    </header>
+
+    <div v-if="resolvingStoredFavorites" class="favorites-view__state">
+      <PokeballSpinner size="40px" />
+    </div>
+
+    <EmptyState
+      v-else-if="favoritesStore.favoritePokemon.length === 0"
+      title="No has marcado ningún Pokémon como favorito"
+      message="Haz clic en el ícono de corazón de tus Pokémon favoritos y aparecerán aquí."
+    />
+
+    <div v-else class="favorites-view__list">
+      <FavoriteCard
+        v-for="item in favoritesStore.favoritePokemon"
+        :key="item.id"
+        :summary="item"
+        :detail="pokemonStore.details.get(item.name)"
+      />
+    </div>
   </div>
 </template>
+
+<style scoped lang="scss">
+@use '@/styles/abstracts/variables' as tokens;
+
+.favorites-view {
+  padding: 16px;
+}
+
+.favorites-view__header {
+  margin-bottom: 16px;
+}
+
+.favorites-view__title {
+  margin: 0;
+  color: tokens.$text-primary;
+  font-size: tokens.$font-size-detail-name;
+  font-weight: tokens.$font-weight-bold;
+}
+
+.favorites-view__list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.favorites-view__state {
+  display: flex;
+  justify-content: center;
+  padding: 32px 0;
+}
+</style>
