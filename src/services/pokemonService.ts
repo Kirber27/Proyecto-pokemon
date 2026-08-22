@@ -3,7 +3,8 @@ import {
   mapPokemonDetail,
   mapPokemonSummary,
   mapSpeciesExtras,
-  mapWeaknesses,
+  mapTypeInfo,
+  type TypeInfo,
 } from '@/services/mappers/pokemonMapper'
 import type { PokemonDetailDto, PokemonListResponseDto, PokemonSpeciesDto, PokemonTypeDto } from '@/types/pokeapi'
 import type { PokemonDetail, PokemonSummary, PokemonType, SpeciesExtras } from '@/types/domain'
@@ -31,8 +32,9 @@ export async function getSpecies(id: number, signal?: AbortSignal): Promise<Spec
   return mapSpeciesExtras(dto)
 }
 
-export async function getTypeRelations(type: PokemonType, signal?: AbortSignal): Promise<PokemonType[]> {
+/** Debilidades + miembros de un tipo — un único fetch sirve el detalle y el filtro. */
+export async function getTypeInfo(type: PokemonType, signal?: AbortSignal): Promise<TypeInfo> {
   const dto = await get<PokemonTypeDto>(`${BASE_URL}/type/${type}`, { signal })
 
-  return mapWeaknesses(dto)
+  return mapTypeInfo(dto)
 }

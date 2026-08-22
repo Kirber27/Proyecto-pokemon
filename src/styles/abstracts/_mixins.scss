@@ -1,4 +1,5 @@
 @use 'sass:map';
+@use 'sass:list';
 @use 'variables' as *;
 @use 'pokemon-types' as *;
 
@@ -15,7 +16,9 @@
   }
 }
 
-// Aplica el color de texto/fondo de un tipo de Pokémon (mapa $pokemon-types).
+// Genera las custom properties de color de un tipo de Pokémon (mapa $pokemon-types):
+// --type-chip-bg/--type-chip-fg para el chip, --type-art-from/--type-art-to para el
+// gradiente del panel de arte. Cero lógica de color en JS — ver design.md §9.
 @mixin type-theme($type) {
   $theme: map.get($pokemon-types, $type);
 
@@ -23,8 +26,22 @@
     @error 'Tipo de Pokémon desconocido: #{$type}.';
   }
 
-  background-color: map.get($theme, chip-bg);
-  color: map.get($theme, chip-fg);
+  $art: map.get($theme, art);
+
+  --type-chip-bg: #{map.get($theme, chip-bg)};
+  --type-chip-fg: #{map.get($theme, chip-fg)};
+  --type-art-from: #{list.nth($art, 1)};
+  --type-art-to: #{list.nth($art, 2)};
+}
+
+// Aplica type-theme() para cada uno de los 18 tipos, seleccionado por [data-type].
+// Un componente solo necesita @include esto una vez y poner data-type="grass" en su raíz.
+@mixin type-theme-variants {
+  @each $type, $theme in $pokemon-types {
+    &[data-type='#{$type}'] {
+      @include type-theme($type);
+    }
+  }
 }
 
 // Trunca texto a una sola línea con ellipsis.

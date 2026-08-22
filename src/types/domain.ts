@@ -1,25 +1,28 @@
 // Modelos de dominio propios de la app — nunca el shape crudo de PokéAPI.
 // Ver .claude/steering/design-system.md (mapa $pokemon-types) para el mismo set de 18 tipos.
 
-export type PokemonType =
-  | 'normal'
-  | 'fire'
-  | 'water'
-  | 'electric'
-  | 'grass'
-  | 'ice'
-  | 'fighting'
-  | 'poison'
-  | 'ground'
-  | 'flying'
-  | 'psychic'
-  | 'bug'
-  | 'rock'
-  | 'ghost'
-  | 'dragon'
-  | 'dark'
-  | 'steel'
-  | 'fairy'
+export const ALL_POKEMON_TYPES = [
+  'normal',
+  'fire',
+  'water',
+  'electric',
+  'grass',
+  'ice',
+  'fighting',
+  'poison',
+  'ground',
+  'flying',
+  'psychic',
+  'bug',
+  'rock',
+  'ghost',
+  'dragon',
+  'dark',
+  'steel',
+  'fairy',
+] as const
+
+export type PokemonType = (typeof ALL_POKEMON_TYPES)[number]
 
 export interface PokemonSummary {
   id: number

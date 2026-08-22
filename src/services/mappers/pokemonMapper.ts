@@ -60,7 +60,19 @@ function mapGenderRatio(genderRate: number): GenderRatio | null {
   return { male: 100 - female, female }
 }
 
-/** `GET /type/{name}` → tipos de los que recibe daño doble (debilidades). */
-export function mapWeaknesses(dto: PokemonTypeDto): PokemonType[] {
-  return dto.damage_relations.double_damage_from.map((type) => type.name as PokemonType)
+export interface TypeInfo {
+  weaknesses: PokemonType[]
+  members: string[]
+}
+
+/**
+ * `GET /type/{name}` → tipos de los que recibe daño doble (debilidades) y la lista de
+ * nombres de Pokémon de ese tipo (para el filtro exacto sin hidratar detalles).
+ * Un único fetch por tipo sirve ambos casos de uso — 18 respuestas cacheables.
+ */
+export function mapTypeInfo(dto: PokemonTypeDto): TypeInfo {
+  return {
+    weaknesses: dto.damage_relations.double_damage_from.map((type) => type.name as PokemonType),
+    members: dto.pokemon.map((entry) => entry.pokemon.name),
+  }
 }

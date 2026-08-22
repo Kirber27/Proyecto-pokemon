@@ -1,14 +1,14 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import { usePokemonStore } from '@/stores/usePokemonStore'
-import { getDetail, getIndex, getSpecies, getTypeRelations } from '@/services/pokemonService'
+import { getDetail, getIndex, getSpecies, getTypeInfo } from '@/services/pokemonService'
 import type { PokemonDetail, PokemonSummary } from '@/types/domain'
 
 vi.mock('@/services/pokemonService', () => ({
   getIndex: vi.fn(),
   getDetail: vi.fn(),
   getSpecies: vi.fn(),
-  getTypeRelations: vi.fn(),
+  getTypeInfo: vi.fn(),
 }))
 
 function summary(name: string, id: number): PokemonSummary {
@@ -31,7 +31,7 @@ beforeEach(() => {
   vi.mocked(getIndex).mockReset()
   vi.mocked(getDetail).mockReset()
   vi.mocked(getSpecies).mockReset()
-  vi.mocked(getTypeRelations).mockReset()
+  vi.mocked(getTypeInfo).mockReset()
 })
 
 describe('loadIndex', () => {
@@ -119,7 +119,7 @@ describe('loadFullDetail', () => {
   it('mezcla detalle + species + debilidades cuando todo responde', async () => {
     vi.mocked(getDetail).mockResolvedValue(detail('bulbasaur', 1))
     vi.mocked(getSpecies).mockResolvedValue({ description: 'Una rara semilla', category: 'Semilla' })
-    vi.mocked(getTypeRelations).mockResolvedValue(['fire', 'ice'])
+    vi.mocked(getTypeInfo).mockResolvedValue({ weaknesses: ['fire', 'ice'], members: ['bulbasaur'] })
     const store = usePokemonStore()
 
     const result = await store.loadFullDetail('bulbasaur')
@@ -132,7 +132,7 @@ describe('loadFullDetail', () => {
   it('degrada solo la sección de species si falla, sin tumbar el resto', async () => {
     vi.mocked(getDetail).mockResolvedValue(detail('bulbasaur', 1))
     vi.mocked(getSpecies).mockRejectedValue(new Error('species down'))
-    vi.mocked(getTypeRelations).mockResolvedValue(['fire'])
+    vi.mocked(getTypeInfo).mockResolvedValue({ weaknesses: ['fire'], members: ['bulbasaur'] })
     const store = usePokemonStore()
 
     const result = await store.loadFullDetail('bulbasaur')
@@ -145,7 +145,7 @@ describe('loadFullDetail', () => {
   it('degrada solo las debilidades si falla ese endpoint', async () => {
     vi.mocked(getDetail).mockResolvedValue(detail('bulbasaur', 1))
     vi.mocked(getSpecies).mockResolvedValue({ category: 'Semilla' })
-    vi.mocked(getTypeRelations).mockRejectedValue(new Error('type down'))
+    vi.mocked(getTypeInfo).mockRejectedValue(new Error('type down'))
     const store = usePokemonStore()
 
     const result = await store.loadFullDetail('bulbasaur')
@@ -172,6 +172,45 @@ describe('loadFullDetail', () => {
     const result = await store.loadFullDetail('missingno')
 
     expect(result?.weaknesses).toBeUndefined()
-    expect(getTypeRelations).not.toHaveBeenCalled()
+    expect(getTypeInfo).not.toHaveBeenCalled()
+  })
+})
+
+describe('ensureTypeInfo', () => {
+  it('cachea la info de un tipo y no repite el request', async () => {
+    vi.mocked(getTypeInfo).mockResolvedValue({ weaknesses: ['fire'], members: ['bulbasaur'] })
+    const store = usePokemonStore()
+
+    await store.ensureTypeInfo(['grass'])
+    await store.ensureTypeInfo(['grass'])
+
+    expect(getTypeInfo).toHaveBeenCalledTimes(1)
+    expect(store.typeInfo.get('grass')).toEqual({ weaknesses: ['fire'], members: ['bulbasaur'] })
+  })
+
+  it('la sirve loadFullDetail también, sin pedirla dos veces (mismo caché)', async () => {
+    vi.mocked(getDetail).mockResolvedValue(detail('bulbasaur', 1))
+    vi.mocked(getSpecies).mockResolvedValue({})
+    vi.mocked(getTypeInfo).mockResolvedValue({ weaknesses: ['fire'], members: ['bulbasaur'] })
+    const store = usePokemonStore()
+
+    await store.ensureTypeInfo(['grass'])
+    await store.loadFullDetail('bulbasaur') // mismo tipo primario: grass
+
+    expect(getTypeInfo).toHaveBeenCalledTimes(1)
+  })
+
+  it('un tipo que falla no bloquea a los demás', async () => {
+    vi.mocked(getTypeInfo).mockImplementation((type) =>
+      type === 'fire'
+        ? Promise.reject(new Error('down'))
+        : Promise.resolve({ weaknesses: [], members: [] }),
+    )
+    const store = usePokemonStore()
+
+    await store.ensureTypeInfo(['fire', 'water'])
+
+    expect(store.typeInfo.has('fire')).toBe(false)
+    expect(store.typeInfo.has('water')).toBe(true)
   })
 })

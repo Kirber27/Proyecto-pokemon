@@ -8,3 +8,12 @@
 
 // Bootstrap: solo grid + utilidades, con las variables del design system ya aplicadas.
 @import 'bootstrap/imports';
+
+// El layout es de viewport fijo con scroll interno (AppShell + PokemonGrid virtualizado),
+// no de página larga: toda la cadena de altura necesita un 100% real desde la raíz.
+html,
+body,
+#app {
+  height: 100%;
+}
+

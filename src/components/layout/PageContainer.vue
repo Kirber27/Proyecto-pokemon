@@ -13,7 +13,9 @@
 @use '@/styles/abstracts/mixins' as mixins;
 
 .page-container {
-  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   background-color: tokens.$bg;
 
   @include mixins.media-up(lg) {
@@ -22,6 +24,9 @@
 }
 
 .page-container__inner {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
   margin-inline: auto;
 
   @include mixins.media-up(lg) {

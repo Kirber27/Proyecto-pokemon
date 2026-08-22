@@ -3,7 +3,7 @@ import {
   mapPokemonDetail,
   mapPokemonSummary,
   mapSpeciesExtras,
-  mapWeaknesses,
+  mapTypeInfo,
 } from '@/services/mappers/pokemonMapper'
 import type { PokemonDetailDto, PokemonSpeciesDto, PokemonTypeDto } from '@/types/pokeapi'
 import bulbasaurDto from '../../fixtures/pokemon-bulbasaur.json'
@@ -63,10 +63,11 @@ describe('mapSpeciesExtras', () => {
   })
 })
 
-describe('mapWeaknesses', () => {
-  it('mapea el fixture real de tipo grass a la lista de debilidades', () => {
-    const weaknesses = mapWeaknesses(grassTypeDto as PokemonTypeDto)
+describe('mapTypeInfo', () => {
+  it('mapea el fixture real de tipo grass a debilidades y miembros', () => {
+    const info = mapTypeInfo(grassTypeDto as PokemonTypeDto)
 
-    expect(weaknesses).toEqual(['flying', 'poison', 'bug', 'fire', 'ice'])
+    expect(info.weaknesses).toEqual(['flying', 'poison', 'bug', 'fire', 'ice'])
+    expect(info.members).toEqual(['bulbasaur', 'ivysaur', 'venusaur', 'oddish', 'gloom'])
   })
 })

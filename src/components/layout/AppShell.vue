@@ -23,10 +23,11 @@ const { isDesktop } = useBreakpoint()
 .app-shell {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  height: 100vh;
 }
 
 .app-shell__content {
   flex: 1 1 auto;
+  min-height: 0;
 }
 </style>

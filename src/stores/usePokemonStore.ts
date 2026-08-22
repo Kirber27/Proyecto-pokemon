@@ -1,8 +1,9 @@
 import { computed, reactive, ref } from 'vue'
 import { defineStore } from 'pinia'
-import { getDetail, getIndex, getSpecies, getTypeRelations } from '@/services/pokemonService'
+import { getDetail, getIndex, getSpecies, getTypeInfo } from '@/services/pokemonService'
 import { useConcurrencyPool } from '@/composables/useConcurrencyPool'
-import type { PokemonDetail, PokemonSummary } from '@/types/domain'
+import type { TypeInfo } from '@/services/mappers/pokemonMapper'
+import type { PokemonDetail, PokemonSummary, PokemonType } from '@/types/domain'
 
 export type IndexStatus = 'idle' | 'loading' | 'ready' | 'error'
 
@@ -12,6 +13,8 @@ export const usePokemonStore = defineStore('pokemon', () => {
   const index = ref<PokemonSummary[]>([])
   const details = reactive(new Map<string, PokemonDetail>())
   const indexStatus = ref<IndexStatus>('idle')
+  // Debilidades (detalle) y miembros (filtro por tipo) — 18 posibles claves, cacheables.
+  const typeInfo = reactive(new Map<PokemonType, TypeInfo>())
 
   // Deduplicación de peticiones en vuelo — no es estado reactivo, es bookkeeping interno.
   const inFlight = new Map<string, Promise<void>>()
@@ -70,6 +73,22 @@ export const usePokemonStore = defineStore('pokemon', () => {
     await runPool(tasks)
   }
 
+  /** Fetch de `/type/{name}` solo para los tipos aún no cacheados (máx. 18 posibles). */
+  async function ensureTypeInfo(types: PokemonType[]): Promise<void> {
+    const pending = [...new Set(types)].filter((type) => !typeInfo.has(type))
+
+    if (pending.length === 0) return
+
+    const results = await Promise.all(
+      pending.map((type) => getTypeInfo(type).catch(() => undefined)),
+    )
+
+    pending.forEach((type, i) => {
+      const result = results[i]
+      if (result) typeInfo.set(type, result)
+    })
+  }
+
   /**
    * Detalle + species + debilidades. Tolerante a fallos parciales: si species o el tipo
    * fallan, el resto del detalle se muestra igual, solo faltan esas secciones.
@@ -82,10 +101,12 @@ export const usePokemonStore = defineStore('pokemon', () => {
 
     const primaryType = base.types[0]
 
-    const [species, weaknesses] = await Promise.all([
+    const [species] = await Promise.all([
       getSpecies(base.id).catch(() => null),
-      primaryType ? getTypeRelations(primaryType).catch(() => undefined) : Promise.resolve(undefined),
+      primaryType ? ensureTypeInfo([primaryType]) : Promise.resolve(),
     ])
+
+    const weaknesses = primaryType ? typeInfo.get(primaryType)?.weaknesses : undefined
 
     const merged: PokemonDetail = {
       ...base,
@@ -101,9 +122,11 @@ export const usePokemonStore = defineStore('pokemon', () => {
     index,
     details,
     indexStatus,
+    typeInfo,
     byName,
     loadIndex,
     ensureDetails,
+    ensureTypeInfo,
     loadFullDetail,
   }
 })
