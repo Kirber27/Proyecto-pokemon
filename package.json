@@ -10,8 +10,8 @@
     "lint": "eslint . --fix",
     "format": "prettier --write src/",
     "type-check": "vue-tsc -b",
-    "test": "vitest run",
-    "test:coverage": "vitest run --coverage"
+    "test": "NODE_OPTIONS=--disable-warning=ExperimentalWarning vitest run",
+    "test:coverage": "NODE_OPTIONS=--disable-warning=ExperimentalWarning vitest run --coverage"
   },
   "dependencies": {
     "@fontsource/poppins": "^5.3.0",
