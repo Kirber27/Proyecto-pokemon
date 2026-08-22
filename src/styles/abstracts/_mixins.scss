@@ -1,0 +1,43 @@
+@use 'sass:map';
+@use 'variables' as *;
+@use 'pokemon-types' as *;
+
+// Mobile-first: aplica el bloque a partir del breakpoint dado (min-width).
+@mixin media-up($breakpoint) {
+  $width: map.get($breakpoints, $breakpoint);
+
+  @if $width == null {
+    @error 'Breakpoint desconocido: #{$breakpoint}. Usa uno de #{map.keys($breakpoints)}.';
+  }
+
+  @media (min-width: $width) {
+    @content;
+  }
+}
+
+// Aplica el color de texto/fondo de un tipo de Pokémon (mapa $pokemon-types).
+@mixin type-theme($type) {
+  $theme: map.get($pokemon-types, $type);
+
+  @if $theme == null {
+    @error 'Tipo de Pokémon desconocido: #{$type}.';
+  }
+
+  background-color: map.get($theme, chip-bg);
+  color: map.get($theme, chip-fg);
+}
+
+// Trunca texto a una sola línea con ellipsis.
+@mixin truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Anillo de foco visible y consistente para elementos interactivos.
+@mixin focus-ring {
+  &:focus-visible {
+    outline: 2px solid $primary;
+    outline-offset: 2px;
+  }
+}

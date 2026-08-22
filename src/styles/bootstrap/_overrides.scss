@@ -1,0 +1,26 @@
+@use 'sass:map';
+@use '../abstracts/variables' as tokens;
+
+// Overrides de variables de Bootstrap — SIEMPRE antes de importar "bootstrap/scss/variables".
+// Nunca se pisan clases de Bootstrap con !important: se personaliza en el origen.
+//
+// Los breakpoints por defecto de Bootstrap (sm 576 · md 768 · lg 992 · xl 1200 · xxl 1400)
+// ya coinciden con $breakpoints del design system, así que no hace falta redefinir
+// $grid-breakpoints.
+
+$primary: tokens.$primary;
+$danger: tokens.$danger;
+
+$font-family-sans-serif: tokens.$font-family-base;
+
+$border-radius: 8px;
+$border-radius-lg: tokens.$radius-card;
+$border-radius-pill: tokens.$radius-pill;
+$border-color: tokens.$border;
+
+$body-bg: tokens.$bg;
+$body-color: tokens.$text-primary;
+
+$grid-gutter-width: map.get(tokens.$spacers, 4);
+
+$enable-negative-margins: true;

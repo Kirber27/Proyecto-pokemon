@@ -1,0 +1,81 @@
+// Design tokens — ver .claude/steering/design-system.md
+// Confirmados por Figma: $primary y la tipografía Poppins.
+// El resto de valores está estimado visualmente (tarea 1.4 los confirma en Figma Dev Mode).
+
+// ---------------------------------------------------------------------------
+// Color de marca
+// ---------------------------------------------------------------------------
+$primary: #1e88e5;
+$primary-hover: #1976d2;
+$primary-soft: #e3f2fd;
+$danger: #e0342b;
+
+// ---------------------------------------------------------------------------
+// Neutros
+// ---------------------------------------------------------------------------
+$text-primary: #12141a;
+$text-secondary: #6b7280;
+$surface: #ffffff;
+$bg: #ffffff;
+$bg-desktop: #f6f7fb;
+$border: #e5e7eb;
+
+// ---------------------------------------------------------------------------
+// Tipografía
+// ---------------------------------------------------------------------------
+$font-family-base:
+  'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+$font-weight-regular: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+
+// Escala (rol: tamaño, peso, line-height)
+$font-size-onboarding-title: 28px;
+$font-size-detail-name: 28px;
+$font-size-card-name: 22px;
+$font-size-section-title: 18px;
+$font-size-body: 14px;
+$font-size-caption: 12px; // Nº001, labels de stats
+$font-size-chip: 13px;
+
+$line-height-tight: 1.25;
+$line-height-base: 1.5;
+
+// ---------------------------------------------------------------------------
+// Espaciado — escala de 4px
+// ---------------------------------------------------------------------------
+$spacers: (
+  0: 0,
+  1: 4px,
+  2: 8px,
+  3: 12px,
+  4: 16px,
+  5: 20px,
+  6: 24px,
+  7: 32px,
+  8: 40px,
+);
+
+// ---------------------------------------------------------------------------
+// Forma y elevación
+// ---------------------------------------------------------------------------
+$radius-card: 16px;
+$radius-art: 14px;
+$radius-pill: 999px;
+$radius-sheet: 20px 20px 0 0;
+
+$shadow-card: 0 2px 8px rgba(18, 20, 26, 0.06);
+$shadow-sheet: 0 -8px 24px rgba(18, 20, 26, 0.12);
+
+// ---------------------------------------------------------------------------
+// Breakpoints — alineados con el grid de Bootstrap 5
+// ---------------------------------------------------------------------------
+$breakpoints: (
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1400px,
+);

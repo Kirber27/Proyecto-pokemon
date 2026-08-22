@@ -1,0 +1,13 @@
+// Solo se importan los módulos de Bootstrap que la app usa: grid + utilidades.
+// Los componentes (botones, cards, forms…) son propios — ver src/components/ui/.
+@import 'bootstrap/scss/functions';
+@import 'overrides';
+@import 'bootstrap/scss/variables';
+@import 'bootstrap/scss/maps';
+@import 'bootstrap/scss/mixins';
+@import 'bootstrap/scss/root';
+@import 'bootstrap/scss/reboot';
+@import 'bootstrap/scss/containers';
+@import 'bootstrap/scss/grid';
+@import 'bootstrap/scss/utilities';
+@import 'bootstrap/scss/utilities/api';

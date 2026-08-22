@@ -1,0 +1,10 @@
+@use 'base/animations';
+
+// Fuentes — @fontsource evita el request a Google Fonts en el critical path.
+@import '@fontsource/poppins/400.css';
+@import '@fontsource/poppins/500.css';
+@import '@fontsource/poppins/600.css';
+@import '@fontsource/poppins/700.css';
+
+// Bootstrap: solo grid + utilidades, con las variables del design system ya aplicadas.
+@import 'bootstrap/imports';

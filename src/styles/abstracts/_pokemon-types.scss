@@ -1,0 +1,98 @@
+// Mapa único de colores por tipo de Pokémon — ver .claude/steering/design-system.md
+//
+// PENDIENTE (tarea 1.4): estos hex están estimados visualmente desde capturas del Figma,
+// no leídos de Dev Mode. Antes de dar por buena la fidelidad visual hay que confirmarlos
+// contra https://www.figma.com/design/edU7Pms8bvosgSYW23yOds/Pok%C3%A9dex (página "Flow").
+// Ajustar un tipo es cambiar una línea acá — nada de if/else por tipo en los componentes.
+$pokemon-types: (
+  normal: (
+    chip-bg: #e9e9dd,
+    chip-fg: #6d6d53,
+    art: (#dad9c5, #c2c1a6),
+  ),
+  fire: (
+    chip-bg: #fde3c4,
+    chip-fg: #b0561a,
+    art: (#f8c173, #f09a3e),
+  ),
+  water: (
+    chip-bg: #d6e7fb,
+    chip-fg: #1f5fa8,
+    art: (#bcdcfa, #7fb6f0),
+  ),
+  electric: (
+    chip-bg: #fbf0c2,
+    chip-fg: #9c7f0a,
+    art: (#f7e28e, #f0cf4c),
+  ),
+  grass: (
+    chip-bg: #dff3d2,
+    chip-fg: #3e7a2e,
+    art: (#cfedb4, #96d479),
+  ),
+  ice: (
+    chip-bg: #d9f3f1,
+    chip-fg: #1e8c86,
+    art: (#beebe7, #8adad2),
+  ),
+  fighting: (
+    chip-bg: #f7d9d3,
+    chip-fg: #a03a28,
+    art: (#f0b7ac, #e38b78),
+  ),
+  poison: (
+    chip-bg: #eedaf6,
+    chip-fg: #7b2d9e,
+    art: (#e3c7f0, #c58ae0),
+  ),
+  ground: (
+    chip-bg: #f0e1c2,
+    chip-fg: #97671e,
+    art: (#e6cd98, #d6ae5f),
+  ),
+  flying: (
+    chip-bg: #e6e4fb,
+    chip-fg: #5c56b0,
+    art: (#d6d2f7, #b6afef),
+  ),
+  psychic: (
+    chip-bg: #fbdcea,
+    chip-fg: #b02c6f,
+    art: (#f7b9d5, #ef87b5),
+  ),
+  bug: (
+    chip-bg: #e7eec0,
+    chip-fg: #6b8c1b,
+    art: (#d6e599, #bedb63),
+  ),
+  rock: (
+    chip-bg: #e7dfc7,
+    chip-fg: #83702f,
+    art: (#d8caa1, #c2ac72),
+  ),
+  ghost: (
+    chip-bg: #dcdcf2,
+    chip-fg: #4f4b8c,
+    art: (#c4c4e9, #9f9ddb),
+  ),
+  dragon: (
+    chip-bg: #d6d9fb,
+    chip-fg: #4131c4,
+    art: (#b9bef7, #8a8fef),
+  ),
+  dark: (
+    chip-bg: #dad5d0,
+    chip-fg: #40352b,
+    art: (#c2bab2, #a0958a),
+  ),
+  steel: (
+    chip-bg: #dfe4e8,
+    chip-fg: #4d5e68,
+    art: (#c9d1d6, #a9b7be),
+  ),
+  fairy: (
+    chip-bg: #fbddec,
+    chip-fg: #b04084,
+    art: (#f7bedd, #ef97c7),
+  ),
+);
