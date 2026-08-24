@@ -4,6 +4,8 @@ import SplashView from '@/views/SplashView.vue'
 import OnboardingView from '@/views/OnboardingView.vue'
 import PokedexView from '@/views/PokedexView.vue'
 import FavoritesView from '@/views/FavoritesView.vue'
+import RegionsView from '@/views/RegionsView.vue'
+import ProfileView from '@/views/ProfileView.vue'
 import NotFoundView from '@/views/NotFoundView.vue'
 
 declare module 'vue-router' {
@@ -35,6 +37,20 @@ export const routes: RouteRecordRaw[] = [
     path: '/favorites',
     name: 'favorites',
     component: FavoritesView,
+    meta: { requiresOnboarding: true, layout: 'shell' },
+  },
+  // Secciones aún en desarrollo: navegables, pero muestran el placeholder de
+  // construcción en vez de una pantalla vacía.
+  {
+    path: '/regions',
+    name: 'regions',
+    component: RegionsView,
+    meta: { requiresOnboarding: true, layout: 'shell' },
+  },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: ProfileView,
     meta: { requiresOnboarding: true, layout: 'shell' },
   },
   { path: '/:pathMatch(.*)*', name: 'not-found', component: NotFoundView },

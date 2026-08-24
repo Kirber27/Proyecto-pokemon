@@ -9,12 +9,14 @@ function buildRouter(): Router {
     routes: [
       { path: '/pokedex', name: 'pokedex', component: { template: '<div />' } },
       { path: '/favorites', name: 'favorites', component: { template: '<div />' } },
+      { path: '/regions', name: 'regions', component: { template: '<div />' } },
+      { path: '/profile', name: 'profile', component: { template: '<div />' } },
     ],
   })
 }
 
 describe('BottomTabBar', () => {
-  it('renderiza los 4 ítems, con Regiones y Perfil deshabilitados', async () => {
+  it('renderiza los 4 ítems, todos navegables', async () => {
     const router = buildRouter()
     await router.push('/pokedex')
 
@@ -24,8 +26,9 @@ describe('BottomTabBar', () => {
     expect(wrapper.text()).toContain('Regiones')
     expect(wrapper.text()).toContain('Favoritos')
     expect(wrapper.text()).toContain('Perfil')
-    expect(wrapper.findAll('a')).toHaveLength(2)
-    expect(wrapper.findAll('[aria-disabled="true"]')).toHaveLength(2)
+    // Regiones y Perfil ya no están deshabilitados: llevan al placeholder de construcción.
+    expect(wrapper.findAll('a')).toHaveLength(4)
+    expect(wrapper.findAll('[aria-disabled="true"]')).toHaveLength(0)
   })
 
   it('marca activo el ítem de la ruta actual', async () => {

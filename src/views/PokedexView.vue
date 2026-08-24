@@ -15,6 +15,7 @@ import EmptyState from '@/components/feedback/EmptyState.vue'
 import PokeballSpinner from '@/components/ui/PokeballSpinner.vue'
 import AppButton from '@/components/ui/AppButton.vue'
 import PokemonDetailView from '@/views/PokemonDetailView.vue'
+import magikarp from '@/assets/images/magikarp.png'
 import type { PokemonType } from '@/types/domain'
 
 const pokemonStore = usePokemonStore()
@@ -83,9 +84,18 @@ function onVisible(names: string[]): void {
       <PokeballSpinner size="48px" />
     </div>
 
-    <div v-else-if="pokemonStore.indexStatus === 'error'" class="pokedex-view__state">
-      <p class="pokedex-view__error-text">Algo salió mal…</p>
-      <AppButton @click="pokemonStore.loadIndex">Reintentar</AppButton>
+    <div v-else-if="pokemonStore.indexStatus === 'error'" class="pokedex-view__state" role="alert">
+      <EmptyState
+        :image="magikarp"
+        title="Algo salió mal…"
+        message="No pudimos cargar la información en este momento. Verifica tu conexión o intenta nuevamente más tarde."
+      >
+        <template #action>
+          <AppButton class="pokedex-view__retry" @click="pokemonStore.loadIndex">
+            Reintentar
+          </AppButton>
+        </template>
+      </EmptyState>
     </div>
 
     <div v-else class="pokedex-view__body">
@@ -158,6 +168,12 @@ function onVisible(names: string[]): void {
   margin: 0;
   color: tokens.$text-secondary;
   font-size: tokens.$font-size-body;
+}
+
+// CTA a lo ancho del bloque, como en el diseño del estado de error.
+.pokedex-view__retry {
+  width: 100%;
+  padding-block: 16px;
 }
 
 .pokedex-view__body {

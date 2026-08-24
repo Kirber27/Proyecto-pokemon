@@ -14,6 +14,8 @@ function buildRouter() {
     routes: [
       { path: '/', name: 'pokedex', component: { template: '<div />' } },
       { path: '/favorites', name: 'favorites', component: { template: '<div />' } },
+      { path: '/regions', name: 'regions', component: { template: '<div />' } },
+      { path: '/profile', name: 'profile', component: { template: '<div />' } },
     ],
   })
 }

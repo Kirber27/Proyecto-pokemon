@@ -94,10 +94,14 @@ describe('PokedexView', () => {
     await flushPromises()
     await wrapper.vm.$nextTick()
 
-    expect(wrapper.text()).toContain('Reintentar')
+    expect(wrapper.text()).toContain('Algo salió mal…')
+    expect(wrapper.text()).toContain('No pudimos cargar la información en este momento.')
+    expect(wrapper.find('.empty-state__image').attributes('src')).toContain('magikarp')
+    // El error se anuncia a lectores de pantalla, no solo visualmente.
+    expect(wrapper.find('[role="alert"]').exists()).toBe(true)
 
     vi.mocked(getIndex).mockResolvedValueOnce([summary(1)])
-    await wrapper.find('button').trigger('click')
+    await wrapper.find('.pokedex-view__retry').trigger('click')
     await flushPromises()
     await wrapper.vm.$nextTick()
 

@@ -16,10 +16,19 @@ beforeEach(() => {
 })
 
 describe('routes', () => {
-  it('define las 6 rutas del diseño', () => {
+  it('define las 8 rutas del diseño', () => {
     const names = routes.map((route) => route.name)
 
-    expect(names).toEqual(['splash', 'onboarding', 'pokedex', 'pokedex-detail', 'favorites', 'not-found'])
+    expect(names).toEqual([
+      'splash',
+      'onboarding',
+      'pokedex',
+      'pokedex-detail',
+      'favorites',
+      'regions',
+      'profile',
+      'not-found',
+    ])
   })
 
   it('resuelve /pokedex/:name con el param name', async () => {
@@ -64,6 +73,30 @@ describe('onboardingGuard', () => {
     await router.push('/favorites')
 
     expect(router.currentRoute.value.name).toBe('onboarding')
+  })
+
+  it.each(['/regions', '/profile'])(
+    'redirige a /onboarding al intentar entrar a %s sin onboarding visto',
+    async (path) => {
+      const router = buildRouter()
+
+      await router.push(path)
+
+      expect(router.currentRoute.value.name).toBe('onboarding')
+    },
+  )
+
+  it.each([
+    { path: '/regions', name: 'regions' },
+    { path: '/profile', name: 'profile' },
+  ])('deja pasar a $path si el onboarding ya se vio', async ({ path, name }) => {
+    const uiStore = useUiStore()
+    uiStore.markOnboardingSeen()
+
+    const router = buildRouter()
+    await router.push(path)
+
+    expect(router.currentRoute.value.name).toBe(name)
   })
 
   it('deja pasar a Pokédex si el onboarding ya se vio', async () => {

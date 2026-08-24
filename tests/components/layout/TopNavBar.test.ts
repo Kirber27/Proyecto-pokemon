@@ -9,6 +9,8 @@ function buildRouter(): Router {
     routes: [
       { path: '/pokedex', name: 'pokedex', component: { template: '<div />' } },
       { path: '/favorites', name: 'favorites', component: { template: '<div />' } },
+      { path: '/regions', name: 'regions', component: { template: '<div />' } },
+      { path: '/profile', name: 'profile', component: { template: '<div />' } },
     ],
   })
 }
@@ -21,8 +23,12 @@ describe('TopNavBar', () => {
     const wrapper = mount(TopNavBar, { global: { plugins: [router] } })
 
     expect(wrapper.text()).toContain('Pokédex')
+    expect(wrapper.text()).toContain('Regiones')
     expect(wrapper.text()).toContain('Favoritos')
-    expect(wrapper.findAll('[aria-disabled="true"]')).toHaveLength(2)
+    expect(wrapper.text()).toContain('Perfil')
+    // Ya no queda ningún ítem deshabilitado: los 4 navegan.
+    expect(wrapper.findAll('[aria-disabled="true"]')).toHaveLength(0)
+    expect(wrapper.findAll('.top-nav-bar__item')).toHaveLength(4)
   })
 
   it('marca activo el ítem de la ruta actual', async () => {

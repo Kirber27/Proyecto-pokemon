@@ -46,6 +46,7 @@ describe('FavoritesView', () => {
 
     expect(wrapper.text()).toContain('No has marcado ningún Pokémon como favorito')
     expect(wrapper.text()).toContain('Haz clic en el ícono de corazón')
+    expect(wrapper.find('.empty-state__image').attributes('src')).toContain('magikarp')
   })
 
   it('lista solo los favoritos, con PokemonCard (CA-06.3)', async () => {

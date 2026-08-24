@@ -11,9 +11,10 @@ describe('navItems', () => {
     ])
   })
 
-  it('Regiones y Perfil no tienen ruta (fuera del MVP, CA-08.3)', () => {
-    expect(navItems.find((item) => item.label === 'Regiones')?.routeName).toBeUndefined()
-    expect(navItems.find((item) => item.label === 'Perfil')?.routeName).toBeUndefined()
+  it('los 4 ítems navegan; Regiones y Perfil van al placeholder de construcción', () => {
+    expect(navItems.find((item) => item.label === 'Regiones')?.routeName).toBe('regions')
+    expect(navItems.find((item) => item.label === 'Perfil')?.routeName).toBe('profile')
+    expect(navItems.every((item) => item.routeName)).toBe(true)
   })
 })
 

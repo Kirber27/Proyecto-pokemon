@@ -5,6 +5,7 @@ import { usePokemonStore } from '@/stores/usePokemonStore'
 import FavoriteCard from '@/components/pokemon/FavoriteCard.vue'
 import EmptyState from '@/components/feedback/EmptyState.vue'
 import PokeballSpinner from '@/components/ui/PokeballSpinner.vue'
+import magikarp from '@/assets/images/magikarp.png'
 
 const favoritesStore = useFavoritesStore()
 const pokemonStore = usePokemonStore()
@@ -42,6 +43,8 @@ watch(() => favoritesStore.favoritePokemon.length, hydrateFavorites)
 
     <EmptyState
       v-else-if="favoritesStore.favoritePokemon.length === 0"
+      class="favorites-view__empty"
+      :image="magikarp"
       title="No has marcado ningún Pokémon como favorito"
       message="Haz clic en el ícono de corazón de tus Pokémon favoritos y aparecerán aquí."
     />
@@ -61,10 +64,14 @@ watch(() => favoritesStore.favoritePokemon.length, hydrateFavorites)
 @use '@/styles/abstracts/variables' as tokens;
 
 .favorites-view {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   padding: 16px;
 }
 
 .favorites-view__header {
+  flex: 0 0 auto;
   margin-bottom: 16px;
 }
 
@@ -77,8 +84,17 @@ watch(() => favoritesStore.favoritePokemon.length, hydrateFavorites)
 
 .favorites-view__list {
   display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
   flex-direction: column;
   gap: 16px;
+  overflow-y: auto;
+}
+
+// Ocupa el espacio sobrante para quedar centrado verticalmente, como en el diseño.
+.favorites-view__empty {
+  flex: 1 1 auto;
+  justify-content: center;
 }
 
 .favorites-view__state {
