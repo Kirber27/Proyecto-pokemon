@@ -52,8 +52,8 @@ function onKeydown(event: KeyboardEvent): void {
         <FilterTypeList v-model="draft" class="filter-sheet__content" />
 
         <div class="filter-sheet__actions">
-          <AppButton variant="secondary" @click="cancel">Cancelar</AppButton>
           <AppButton variant="primary" @click="apply">Aplicar</AppButton>
+          <AppButton variant="secondary" @click="cancel">Cancelar</AppButton>
         </div>
       </div>
     </div>
@@ -131,12 +131,15 @@ function onKeydown(event: KeyboardEvent): void {
   margin-bottom: 24px;
 }
 
+// FilterSheet solo se monta en mobile (PokedexView usa FilterSidebar en desktop),
+// así que estos estilos no alcanzan al desktop.
 .filter-sheet__actions {
   display: flex;
+  flex-direction: column;
   gap: 12px;
 
   :deep(.app-button) {
-    flex: 1 1 0;
+    width: 100%;
   }
 }
 </style>
