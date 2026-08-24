@@ -25,7 +25,10 @@ function summary(id: number, name: string): PokemonSummary {
 function buildRouter() {
   return createRouter({
     history: createMemoryHistory(),
-    routes: [{ path: '/pokedex/:name', name: 'pokedex-detail', component: { template: '<div />' } }],
+    routes: [
+      { path: '/pokedex', name: 'pokedex', component: { template: '<div />' } },
+      { path: '/pokedex/:name', name: 'pokedex-detail', component: { template: '<div />' } },
+    ],
   })
 }
 
@@ -47,6 +50,34 @@ describe('FavoritesView', () => {
     expect(wrapper.text()).toContain('No has marcado ningún Pokémon como favorito')
     expect(wrapper.text()).toContain('Haz clic en el ícono de corazón')
     expect(wrapper.find('.empty-state__image').attributes('src')).toContain('magikarp')
+  })
+
+  it('el botón de volver lleva a la Pokédex', async () => {
+    vi.mocked(getIndex).mockResolvedValue([])
+    const router = buildRouter()
+    const wrapper = mount(FavoritesView, { global: { plugins: [router] } })
+    await flushPromises()
+
+    const back = wrapper.find('.favorites-view__back')
+    expect(back.attributes('aria-label')).toBe('Volver')
+
+    await back.trigger('click')
+    await flushPromises()
+
+    expect(router.currentRoute.value.name).toBe('pokedex')
+  })
+
+  it('el botón de volver va antes del título en el header', async () => {
+    vi.mocked(getIndex).mockResolvedValue([])
+    const router = buildRouter()
+    const wrapper = mount(FavoritesView, { global: { plugins: [router] } })
+    await flushPromises()
+
+    const header = wrapper.find('.favorites-view__header')
+    const children = [...header.element.children].map((el) => el.className)
+
+    expect(children[0]).toContain('favorites-view__back')
+    expect(children[1]).toContain('favorites-view__title')
   })
 
   it('lista solo los favoritos, con PokemonCard (CA-06.3)', async () => {
