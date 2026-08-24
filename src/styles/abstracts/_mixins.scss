@@ -28,6 +28,7 @@
 
   $art: map.get($theme, art);
 
+  --type-solid: #{map.get($theme, solid)};
   --type-chip-bg: #{map.get($theme, chip-bg)};
   --type-chip-fg: #{map.get($theme, chip-fg)};
   --type-art-from: #{list.nth($art, 1)};

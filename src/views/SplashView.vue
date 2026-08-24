@@ -10,8 +10,22 @@ const router = useRouter()
 const pokemonStore = usePokemonStore()
 const uiStore = useUiStore()
 
+/**
+ * Tiempo mínimo de la splash en pantalla. Sin esto dura exactamente lo que tarde el
+ * índice: con la API rápida o el store ya cargado, la Pokébola aparecía unos pocos
+ * milisegundos y en la práctica no se veía. El diseño la trata como una precarga con
+ * presencia propia, no como un parpadeo.
+ */
+const MIN_VISIBLE_MS = 1200
+
+function delay(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms))
+}
+
 async function preload(): Promise<void> {
-  await pokemonStore.loadIndex()
+  // En paralelo, no en secuencia: la espera mínima no se suma al tiempo de carga,
+  // solo pone un piso. Si el índice tarda más de 1200 ms, manda el índice.
+  await Promise.all([pokemonStore.loadIndex(), delay(MIN_VISIBLE_MS)])
 
   // CA-09.1: si falla, se queda en esta pantalla con el botón de Reintentar.
   if (pokemonStore.indexStatus === 'error') return
@@ -25,7 +39,7 @@ onMounted(preload)
 
 <template>
   <div class="splash-view">
-    <PokeballSpinner size="64px" />
+    <PokeballSpinner size="128px" />
 
     <template v-if="pokemonStore.indexStatus === 'error'">
       <p class="splash-view__error">Algo salió mal…</p>

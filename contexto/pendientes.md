@@ -4,7 +4,6 @@
 
 Para ser honesto sobre el estado actual:
 
-- **Íconos en los chips de tipo.** El diseño los lleva; el componente hoy es solo texto.
 - **Migrar los `@import` de Bootstrap a `@use`.** Dart Sass 3 los va a eliminar y el build ya
   emite avisos de deprecación.
 - **Secciones Regiones y Perfil.** Hoy son placeholders "Muy pronto disponible"; navegan y
