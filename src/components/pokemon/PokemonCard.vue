@@ -15,7 +15,11 @@ const primaryType = computed(() => props.detail?.types[0])
 </script>
 
 <template>
-  <div class="pokemon-card" :style="{ height: `${POKEMON_CARD_HEIGHT}px` }">
+  <div
+    class="pokemon-card"
+    :data-type="primaryType"
+    :style="{ height: `${POKEMON_CARD_HEIGHT}px` }"
+  >
     <RouterLink
       :to="{ name: 'pokedex-detail', params: { name: summary.name } }"
       class="pokemon-card__link"
@@ -35,7 +39,7 @@ const primaryType = computed(() => props.detail?.types[0])
         </div>
       </div>
 
-      <div class="pokemon-card__art" :data-type="primaryType">
+      <div class="pokemon-card__art">
         <img
           :src="summary.artworkUrl"
           :alt="summary.displayName"
@@ -59,9 +63,11 @@ const primaryType = computed(() => props.detail?.types[0])
 .pokemon-card {
   position: relative;
   border-radius: tokens.$radius-card;
-  background-color: tokens.$surface;
+  background-color: var(--type-art-from, #{tokens.$surface});
   box-shadow: tokens.$shadow-card;
   overflow: hidden;
+
+  @include mixins.type-theme-variants;
 }
 
 .pokemon-card__link {
@@ -110,13 +116,8 @@ const primaryType = computed(() => props.detail?.types[0])
   align-items: center;
   justify-content: center;
   flex: 0 0 40%;
-  background: linear-gradient(
-    160deg,
-    var(--type-art-from, #{tokens.$border}),
-    var(--type-art-to, #{tokens.$bg-desktop})
-  );
-
-  @include mixins.type-theme-variants;
+  border-radius: tokens.$radius-art;
+  background-color: var(--type-art-to, #{tokens.$bg-desktop});
 }
 
 .pokemon-card__sprite {

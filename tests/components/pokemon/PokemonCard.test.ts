@@ -77,7 +77,23 @@ describe('PokemonCard', () => {
 
     expect(wrapper.text()).toContain('Planta')
     expect(wrapper.text()).toContain('Veneno')
-    expect(wrapper.find('.pokemon-card__art').attributes('data-type')).toBe('grass')
+    // El tema del tipo vive en la raíz: tiñe la card entera y el panel hereda las vars.
+    expect(wrapper.find('.pokemon-card').attributes('data-type')).toBe('grass')
+    expect(wrapper.find('.pokemon-card__art').attributes('data-type')).toBeUndefined()
+  })
+
+  it('no aplica tono de tipo mientras no llega el detalle', async () => {
+    const router = buildRouter()
+    await router.push('/')
+
+    const wrapper = mount(PokemonCard, {
+      props: { summary },
+      global: { plugins: [router] },
+    })
+
+    // Sin tipo no hay data-type, así que la card cae al fallback neutro en vez de
+    // parpadear a un color intermedio mientras carga.
+    expect(wrapper.find('.pokemon-card').attributes('data-type')).toBeUndefined()
   })
 
   it('mantiene una altura fija compartida con el virtualizador', async () => {

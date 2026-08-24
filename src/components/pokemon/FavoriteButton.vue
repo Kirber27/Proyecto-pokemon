@@ -31,6 +31,7 @@ function toggle(): void {
 </template>
 
 <style scoped lang="scss">
+@use 'sass:color';
 @use '@/styles/abstracts/variables' as tokens;
 @use '@/styles/abstracts/mixins' as mixins;
 
@@ -40,15 +41,19 @@ function toggle(): void {
   justify-content: center;
   width: 36px;
   height: 36px;
-  border: none;
+  // El botón va sobre el arte del Pokémon: anillo blanco para despegarlo del fondo
+  // y relleno translúcido para atenuarlo sin taparlo. box-sizing global es
+  // border-box (reboot de Bootstrap), así que el borde no agranda el círculo.
+  border: 3px solid tokens.$surface;
   border-radius: 50%;
-  background-color: tokens.$surface;
-  color: tokens.$text-secondary;
+  background-color: color.change(tokens.$text-primary, $alpha: 0.35);
+  color: tokens.$surface;
   cursor: pointer;
 
   @include mixins.focus-ring;
 }
 
+// Marcado: solo cambia el corazón a rojo pleno; el círculo se mantiene igual.
 .favorite-button--active {
   color: tokens.$danger;
 }
