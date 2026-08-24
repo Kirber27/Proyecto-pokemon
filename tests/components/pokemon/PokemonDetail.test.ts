@@ -41,7 +41,18 @@ describe('PokemonDetail', () => {
     expect(wrapper.text()).toContain('Semilla')
     expect(wrapper.text()).toContain('Overgrow')
     expect(wrapper.text()).toContain('Debilidades')
-    expect(wrapper.text()).toContain('88%') // género redondeado
+    expect(wrapper.text()).toContain('Género')
+    expect(wrapper.text()).toContain('87,5%') // sin redondear, como el diseño
+  })
+
+  // Regresión: el mixin de tema estaba en .pokemon-detail__hero, que no lleva data-type,
+  // así que el selector no hacía match y el hero se quedaba con el gris del fallback en
+  // vez del color del tipo. El atributo y el mixin tienen que vivir en el mismo elemento.
+  it('expone data-type en la raíz, que es donde el tema define las variables', () => {
+    const wrapper = mount(PokemonDetail, { props: { detail: fullDetail } })
+
+    expect(wrapper.find('.pokemon-detail').attributes('data-type')).toBe('grass')
+    expect(wrapper.find('.pokemon-detail__hero').attributes('data-type')).toBeUndefined()
   })
 
   it('emite close al presionar volver', async () => {

@@ -45,8 +45,8 @@ const primaryAbility = computed(() => props.detail.abilities[0])
     </header>
 
     <div class="pokemon-detail__body">
-      <span class="pokemon-detail__number">{{ detail.number }}</span>
       <h1 class="pokemon-detail__name">{{ detail.displayName }}</h1>
+      <span class="pokemon-detail__number">{{ detail.number }}</span>
 
       <div class="pokemon-detail__types">
         <PokemonTypeChip v-for="type in detail.types" :key="type" :type="type" />
@@ -85,6 +85,11 @@ const primaryAbility = computed(() => props.detail.abilities[0])
   height: 100%;
   overflow-y: auto;
   background-color: tokens.$surface;
+
+  // El mixin va acá, en el mismo elemento que lleva data-type. Estaba en __hero, que
+  // no tiene el atributo, así que el selector no hacía match y el hero se quedaba
+  // siempre con el gris del fallback en vez del color del tipo.
+  @include mixins.type-theme-variants;
 }
 
 .pokemon-detail__hero {
@@ -94,13 +99,9 @@ const primaryAbility = computed(() => props.detail.abilities[0])
   align-items: center;
   justify-content: center;
   padding: 20px;
-  background: linear-gradient(
-    160deg,
-    var(--type-art-from, #{tokens.$border}),
-    var(--type-art-to, #{tokens.$bg-desktop})
-  );
-
-  @include mixins.type-theme-variants;
+  // Tono saturado del tipo (--type-art-to): el mismo que va detrás del sprite en el
+  // panel de arte de PokemonCard, no el claro que tiñe el fondo de la card.
+  background-color: var(--type-art-to, #{tokens.$bg-desktop});
 }
 
 .pokemon-detail__back,
@@ -143,13 +144,15 @@ const primaryAbility = computed(() => props.detail.abilities[0])
 }
 
 .pokemon-detail__number {
+  display: block;
+  margin-bottom: 12px;
   color: tokens.$text-secondary;
   font-size: tokens.$font-size-caption;
   font-weight: tokens.$font-weight-medium;
 }
 
 .pokemon-detail__name {
-  margin: 4px 0 12px;
+  margin: 0 0 4px;
   color: tokens.$text-primary;
   font-size: tokens.$font-size-detail-name;
   font-weight: tokens.$font-weight-bold;

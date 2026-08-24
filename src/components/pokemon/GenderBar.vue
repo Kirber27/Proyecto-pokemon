@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { formatPercent } from '@/utils/formatters'
 import type { GenderRatio } from '@/types/domain'
 
 defineProps<{
@@ -8,13 +9,19 @@ defineProps<{
 
 <template>
   <div class="gender-bar">
-    <div class="gender-bar__track" role="img" :aria-label="`${Math.round(ratio.male)}% macho, ${Math.round(ratio.female)}% hembra`">
+    <span class="gender-bar__title">Género</span>
+
+    <div
+      class="gender-bar__track"
+      role="img"
+      :aria-label="`Género: ${formatPercent(ratio.male)} macho, ${formatPercent(ratio.female)} hembra`"
+    >
       <div class="gender-bar__male" :style="{ width: `${ratio.male}%` }"></div>
       <div class="gender-bar__female" :style="{ width: `${ratio.female}%` }"></div>
     </div>
     <div class="gender-bar__labels" aria-hidden="true">
-      <span class="gender-bar__label gender-bar__label--male">♂ {{ Math.round(ratio.male) }}%</span>
-      <span class="gender-bar__label gender-bar__label--female">♀ {{ Math.round(ratio.female) }}%</span>
+      <span class="gender-bar__label gender-bar__label--male">♂ {{ formatPercent(ratio.male) }}</span>
+      <span class="gender-bar__label gender-bar__label--female">♀ {{ formatPercent(ratio.female) }}</span>
     </div>
   </div>
 </template>
@@ -26,6 +33,16 @@ defineProps<{
   display: flex;
   flex-direction: column;
   gap: 6px;
+}
+
+// Mismo tratamiento que la etiqueta de StatCard, para que la sección se lea pareja.
+.gender-bar__title {
+  color: tokens.$text-secondary;
+  font-size: tokens.$font-size-caption;
+  font-weight: tokens.$font-weight-medium;
+  letter-spacing: 0.04em;
+  text-align: center;
+  text-transform: uppercase;
 }
 
 .gender-bar__track {

@@ -49,6 +49,17 @@ function formatDecimal(value: number): string {
   return value.toFixed(1).replace('.', ',')
 }
 
+/**
+ * 87.5 → '87,5%' · 50 → '50%'
+ * gender_rate es n/8, así que los valores son enteros o terminan en ,5: se muestra
+ * un decimal solo cuando hace falta. Redondear a entero perdía el 87,5 del diseño.
+ */
+export function formatPercent(value: number): string {
+  const rounded = Math.round(value * 10) / 10
+
+  return `${String(rounded).replace('.', ',')}%`
+}
+
 /** 'grass' → 'Planta' */
 export function typeNameEs(type: PokemonType): string {
   return TYPE_NAMES_ES[type]

@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import {
   capitalize,
   formatHeightM,
+  formatPercent,
   formatPokemonNumber,
   formatWeightKg,
   typeNameEs,
@@ -47,5 +48,18 @@ describe('typeNameEs', () => {
     expect(typeNameEs('grass')).toBe('Planta')
     expect(typeNameEs('poison')).toBe('Veneno')
     expect(typeNameEs('water')).toBe('Agua')
+  })
+})
+
+describe('formatPercent', () => {
+  it('conserva el medio punto de los ratios n/8', () => {
+    expect(formatPercent(87.5)).toBe('87,5%')
+    expect(formatPercent(12.5)).toBe('12,5%')
+  })
+
+  it('no arrastra decimales en los enteros', () => {
+    expect(formatPercent(50)).toBe('50%')
+    expect(formatPercent(0)).toBe('0%')
+    expect(formatPercent(100)).toBe('100%')
   })
 })

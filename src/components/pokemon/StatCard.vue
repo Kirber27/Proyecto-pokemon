@@ -16,13 +16,12 @@ defineProps<{
 @use '@/styles/abstracts/variables' as tokens;
 @use '@/styles/abstracts/mixins' as mixins;
 
+// En el diseño el borde encierra solo el valor: la etiqueta va afuera, encima.
 .stat-card {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  padding: 12px;
-  border: 1px solid tokens.$border;
-  border-radius: 12px;
+  align-items: center;
+  gap: 6px;
 }
 
 .stat-card__label {
@@ -34,9 +33,14 @@ defineProps<{
 }
 
 .stat-card__value {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid tokens.$border;
+  border-radius: 12px;
   color: tokens.$text-primary;
   font-size: tokens.$font-size-body;
   font-weight: tokens.$font-weight-semibold;
+  text-align: center;
 
   @include mixins.truncate;
 }
