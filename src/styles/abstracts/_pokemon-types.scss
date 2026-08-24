@@ -2,6 +2,10 @@
 //
 // `solid` es el color oficial del tipo: sale del atributo fill de los SVG exportados del
 // Figma (src/assets/types/), así que estos 18 sí son valores confirmados.
+//
+// `glyph` apunta al mismo SVG, pero para usarlo como MÁSCARA (marca de agua detrás del
+// sprite). Como máscara solo importa la silueta: el color lo pone el CSS, así que el
+// mismo archivo sirve tanto para el ícono del chip como para el fondo en otro tono.
 
 //
 // PENDIENTE (tarea 1.4): `chip-bg`, `chip-fg` y `art` siguen estimados visualmente desde
@@ -11,108 +15,126 @@
 $pokemon-types: (
   normal: (
     solid: #919aa2,
+    glyph: url('../../assets/types/normal.svg'),
     chip-bg: #e9e9dd,
     chip-fg: #6d6d53,
     art: (#dad9c5, #c2c1a6),
   ),
   fire: (
     solid: #ff9d55,
+    glyph: url('../../assets/types/fire.svg'),
     chip-bg: #fde3c4,
     chip-fg: #b0561a,
     art: (#f8c173, #f09a3e),
   ),
   water: (
     solid: #5090d6,
+    glyph: url('../../assets/types/water.svg'),
     chip-bg: #d6e7fb,
     chip-fg: #1f5fa8,
     art: (#bcdcfa, #7fb6f0),
   ),
   electric: (
     solid: #f4d23c,
+    glyph: url('../../assets/types/electric.svg'),
     chip-bg: #fbf0c2,
     chip-fg: #9c7f0a,
     art: (#f7e28e, #f0cf4c),
   ),
   grass: (
     solid: #63bc5a,
+    glyph: url('../../assets/types/grass.svg'),
     chip-bg: #dff3d2,
     chip-fg: #3e7a2e,
     art: (#cfedb4, #96d479),
   ),
   ice: (
     solid: #73cec0,
+    glyph: url('../../assets/types/ice.svg'),
     chip-bg: #d9f3f1,
     chip-fg: #1e8c86,
     art: (#beebe7, #8adad2),
   ),
   fighting: (
     solid: #ce416b,
+    glyph: url('../../assets/types/fighting.svg'),
     chip-bg: #f7d9d3,
     chip-fg: #a03a28,
     art: (#f0b7ac, #e38b78),
   ),
   poison: (
     solid: #b567ce,
+    glyph: url('../../assets/types/poison.svg'),
     chip-bg: #eedaf6,
     chip-fg: #7b2d9e,
     art: (#e3c7f0, #c58ae0),
   ),
   ground: (
     solid: #d97845,
+    glyph: url('../../assets/types/ground.svg'),
     chip-bg: #f0e1c2,
     chip-fg: #97671e,
     art: (#e6cd98, #d6ae5f),
   ),
   flying: (
     solid: #89aae3,
+    glyph: url('../../assets/types/flying.svg'),
     chip-bg: #e6e4fb,
     chip-fg: #5c56b0,
     art: (#d6d2f7, #b6afef),
   ),
   psychic: (
     solid: #fa7179,
+    glyph: url('../../assets/types/psychic.svg'),
     chip-bg: #fbdcea,
     chip-fg: #b02c6f,
     art: (#f7b9d5, #ef87b5),
   ),
   bug: (
     solid: #91c12f,
+    glyph: url('../../assets/types/bug.svg'),
     chip-bg: #e7eec0,
     chip-fg: #6b8c1b,
     art: (#d6e599, #bedb63),
   ),
   rock: (
     solid: #c5b78c,
+    glyph: url('../../assets/types/rock.svg'),
     chip-bg: #e7dfc7,
     chip-fg: #83702f,
     art: (#d8caa1, #c2ac72),
   ),
   ghost: (
     solid: #5269ad,
+    glyph: url('../../assets/types/ghost.svg'),
     chip-bg: #dcdcf2,
     chip-fg: #4f4b8c,
     art: (#c4c4e9, #9f9ddb),
   ),
   dragon: (
     solid: #0b6dc3,
+    glyph: url('../../assets/types/dragon.svg'),
     chip-bg: #d6d9fb,
     chip-fg: #4131c4,
     art: (#b9bef7, #8a8fef),
   ),
   dark: (
     solid: #5a5465,
+    glyph: url('../../assets/types/dark.svg'),
     chip-bg: #dad5d0,
     chip-fg: #40352b,
     art: (#c2bab2, #a0958a),
   ),
   steel: (
     solid: #5a8ea2,
+    glyph: url('../../assets/types/steel.svg'),
     chip-bg: #dfe4e8,
     chip-fg: #4d5e68,
     art: (#c9d1d6, #a9b7be),
   ),
   fairy: (
     solid: #ec8fe6,
+    glyph: url('../../assets/types/fairy.svg'),
     chip-bg: #fbddec,
     chip-fg: #b04084,
     art: (#f7bedd, #ef97c7),

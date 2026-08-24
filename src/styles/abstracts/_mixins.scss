@@ -59,3 +59,29 @@
     outline-offset: 2px;
   }
 }
+
+// Expone --type-glyph (silueta del tipo) para las superficies que la dibujan de fondo:
+// el panel de arte de la card y el hero del detalle. Va separado de type-theme-variants
+// porque el chip incluye ese mixin y no necesita arrastrar 18 URLs de SVG.
+@mixin type-glyph-variants {
+  @each $type, $theme in $pokemon-types {
+    &[data-type='#{$type}'] {
+      --type-glyph: #{map.get($theme, glyph)};
+    }
+  }
+}
+
+// Dibuja la silueta del tipo como marca de agua, detrás del contenido.
+// `size` controla cuánto se pasa del contenedor (en el diseño el glifo sangra por los bordes).
+@mixin type-glyph-watermark($size: 130%, $position: center) {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: var(--type-art-from, transparent);
+  mask-image: var(--type-glyph);
+  mask-repeat: no-repeat;
+  mask-position: $position;
+  mask-size: $size;
+  // Sin prefijos -webkit- a mano: el build los agrega solo.
+  pointer-events: none;
+}

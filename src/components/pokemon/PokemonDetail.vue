@@ -90,6 +90,7 @@ const primaryAbility = computed(() => props.detail.abilities[0])
   // no tiene el atributo, así que el selector no hacía match y el hero se quedaba
   // siempre con el gris del fallback en vez del color del tipo.
   @include mixins.type-theme-variants;
+  @include mixins.type-glyph-variants;
 }
 
 .pokemon-detail__hero {
@@ -102,6 +103,11 @@ const primaryAbility = computed(() => props.detail.abilities[0])
   // Tono saturado del tipo (--type-art-to): el mismo que va detrás del sprite en el
   // panel de arte de PokemonCard, no el claro que tiñe el fondo de la card.
   background-color: var(--type-art-to, #{tokens.$bg-desktop});
+  overflow: hidden;
+
+  &::before {
+    @include mixins.type-glyph-watermark(35%);
+  }
 }
 
 .pokemon-detail__back,
@@ -133,6 +139,9 @@ const primaryAbility = computed(() => props.detail.abilities[0])
 }
 
 .pokemon-detail__sprite {
+  // Por encima del ::before de la marca de agua.
+  position: relative;
+  z-index: 1;
   width: 160px;
   height: 160px;
   object-fit: contain;

@@ -68,6 +68,8 @@ const primaryType = computed(() => props.detail?.types[0])
   overflow: hidden;
 
   @include mixins.type-theme-variants;
+  // data-type vive acá, así que --type-glyph baja por herencia hasta __art.
+  @include mixins.type-glyph-variants;
 }
 
 .pokemon-card__link {
@@ -118,9 +120,18 @@ const primaryType = computed(() => props.detail?.types[0])
   flex: 0 0 40%;
   border-radius: tokens.$radius-art;
   background-color: var(--type-art-to, #{tokens.$bg-desktop});
+  overflow: hidden;
+
+  // Silueta del tipo de fondo, detrás del sprite.
+  &::before {
+    @include mixins.type-glyph-watermark(70%);
+  }
 }
 
 .pokemon-card__sprite {
+  // Por encima del ::before de la marca de agua, que va posicionado.
+  position: relative;
+  z-index: 1;
   width: 96px;
   height: 96px;
   object-fit: contain;
