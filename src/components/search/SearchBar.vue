@@ -36,14 +36,16 @@ watch(debouncedQuery, (value) => {
 
 <template>
   <div class="search-bar">
-    <IconSearch class="search-bar__icon" />
-    <AppInput
-      v-model="rawQuery"
-      type="search"
-      placeholder="Buscar Pokémon..."
-      aria-label="Buscar Pokémon"
-      class="search-bar__input"
-    />
+    <div class="search-bar__field">
+      <IconSearch class="search-bar__icon" />
+      <AppInput
+        v-model="rawQuery"
+        type="search"
+        placeholder="Buscar Pokémon..."
+        aria-label="Buscar Pokémon"
+        class="search-bar__input"
+      />
+    </div>
     <button
       v-if="showFilterButton"
       type="button"
@@ -66,21 +68,29 @@ watch(debouncedQuery, (value) => {
   gap: 8px;
 }
 
+// Ancla la lupa: sin position aquí, el icono absoluto caía en su static position
+// y el padding del input no lo compensaba.
+.search-bar__field {
+  position: relative;
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  min-width: 0;
+}
+
 .search-bar__icon {
   position: absolute;
+  left: 14px;
   width: 18px;
   height: 18px;
-  margin-left: 14px;
   color: tokens.$text-secondary;
   pointer-events: none;
 }
 
-.search-bar__input {
-  flex: 1 1 auto;
-
-  :deep(.app-input) {
-    padding-left: 40px;
-  }
+// :deep() desde el contenedor, no desde el propio input: la clase del componente
+// aterriza en el mismo <input>, así que un descendiente nunca hacía match.
+.search-bar__field :deep(.app-input) {
+  padding-left: 40px;
 }
 
 .search-bar__filter {

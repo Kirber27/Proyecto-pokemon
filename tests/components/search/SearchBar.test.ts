@@ -45,6 +45,23 @@ describe('SearchBar', () => {
     expect(uiStore.query).toBe('ch')
   })
 
+  // Regresión: la lupa se encimaba con el placeholder porque el padding-left venía
+  // de `.search-bar__input :deep(.app-input)`, y ambas clases viven en el MISMO
+  // <input> — un descendiente de sí mismo nunca hace match. El padding solo se
+  // aplica mientras el input siga anidado dentro de .search-bar__field.
+  it('mantiene la lupa y el input dentro del contenedor que aplica el padding', () => {
+    const wrapper = mount(SearchBar)
+
+    const field = wrapper.find('.search-bar__field')
+    expect(field.exists()).toBe(true)
+    expect(field.find('.search-bar__icon').exists()).toBe(true)
+
+    const input = field.find('input.app-input')
+    expect(input.exists()).toBe(true)
+    // El input es descendiente del contenedor, no el contenedor mismo.
+    expect(input.element).not.toBe(field.element)
+  })
+
   it('muestra el botón de filtro por defecto y lo puede ocultar (desktop)', () => {
     const withFilter = mount(SearchBar)
     expect(withFilter.find('.search-bar__filter').exists()).toBe(true)
