@@ -74,6 +74,11 @@ function remove(): void {
 
 .favorite-card {
   position: relative;
+  // Sin esto, al haber más favoritos de los que caben en el alto disponible,
+  // el overflow:hidden de esta card (grid item) resuelve su min-height:auto
+  // como 0 en vez de basarse en el contenido — la grilla comprime cada fila
+  // muy por debajo de PokemonCard (180px) en lugar de simplemente scrollear.
+  min-height: 180px;
   overflow: hidden;
   border-radius: tokens.$radius-card;
 }
